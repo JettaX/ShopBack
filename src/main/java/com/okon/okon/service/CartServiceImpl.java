@@ -1,0 +1,33 @@
+package com.okon.okon.service;
+
+import com.okon.okon.model.Cart;
+import com.okon.okon.repository.CartRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class CartServiceImpl implements CartService {
+    private final CartRepository cartRepository;
+
+    @Override
+    public Cart insert(Cart cart) {
+        return cartRepository.insert(cart);
+    }
+
+    @Override
+    public Optional<Cart> findByUserId(String userId) {
+        log.debug("findById {}", userId);
+        return cartRepository.findByUserId(userId);
+    }
+
+    @Override
+    public void clearByUserId(String userId) {
+        log.debug("clearByUserId {}", userId);
+        cartRepository.clearByUserId(userId);
+    }
+}

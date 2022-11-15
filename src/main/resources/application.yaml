@@ -1,0 +1,20 @@
+server:
+  port : 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+
+spring:
+  mandatory-file-encoding: UTF-8
+
+#spring:
+#  data:
+#    mongodb:
+#      port: 27017
+#      host: localhost
+#      database: GeekBrains
+#      password: f8wy3dmi
+#      username: mongo
+#      authentication-database: admin
+
