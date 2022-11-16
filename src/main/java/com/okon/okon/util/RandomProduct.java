@@ -16,7 +16,6 @@ public class RandomProduct {
 
         for (int i = 0; i < size; ++i) {
             products.add(Product.builder()
-                    .id(UUID.randomUUID().toString())
                     .name(RandomStringUtils.random(5))
                     .description(RandomStringUtils.random(150))
                     .price(new Random().nextInt(1000))

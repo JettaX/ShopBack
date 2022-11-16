@@ -1,16 +1,14 @@
 package com.okon.okon.repository;
 
 import com.okon.okon.model.Product;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
-public class ProductRepositoryImpl implements ProductRepository {
-    private static Map<String, Product> products = new HashMap<>();
+public class ProductRepositoryInMemory implements ProductRepository {
+    private static Map<Integer, Product> products = new HashMap<>();
 
     @Override
     public Product insert(Product product) {
@@ -18,7 +16,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findById(String id) {
+    public Optional<Product> findById(int id) {
         return Optional.ofNullable(products.get(id));
     }
 
@@ -36,7 +34,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public boolean deleteById(String id) {
-        return !products.remove(id).getId().isEmpty();
+    public void deleteById(String id) {
+        products.remove(id);
     }
 }

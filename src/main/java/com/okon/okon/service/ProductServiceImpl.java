@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product insertFromDTO(ProductDTO productDTO) {
         return insert(Product.builder()
-                .id(UUID.randomUUID().toString())
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())
@@ -35,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(String id) {
+    public Optional<Product> findById(int id) {
         log.debug("findById {} ", id);
         return productRepository.findById(id);
     }
@@ -53,8 +51,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public void deleteById(String id) {
         log.debug("deleteById {} ", id);
-        return productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 }

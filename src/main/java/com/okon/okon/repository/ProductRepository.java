@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface ProductRepository {
     Product insert(Product product);
 
-    Optional<Product> findById(String id);
+    Optional<Product> findById(int id);
 
     List<Product> findAll();
 
     List<Product> findByName(String name);
 
-    boolean deleteById(String id);
+    void deleteById(String id);
 }

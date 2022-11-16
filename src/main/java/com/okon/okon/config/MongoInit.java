@@ -5,11 +5,13 @@ import com.okon.okon.util.RandomProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class MongoInit {
 
+
     @Autowired
-    private void mongoInitialization(ProductService productService) {
+    public void mongoInitialization(ProductService productService) {
         initProducts(productService);
     }
 

@@ -7,6 +7,11 @@ server:
 
 spring:
   mandatory-file-encoding: UTF-8
+  datasource:
+    url: jdbc:postgresql://localhost:5455/Geek
+    username: kekNya
+    password: f8wy3dmi
+    driver-class-name: org.postgresql.Driver
 
 #spring:
 #  data:

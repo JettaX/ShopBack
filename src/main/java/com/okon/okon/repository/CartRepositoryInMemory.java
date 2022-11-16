@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class CartRepositoryImpl implements CartRepository {
+public class CartRepositoryInMemory implements CartRepository {
     private static Map<String, Cart> carts = new HashMap<>();
 
     @Override
