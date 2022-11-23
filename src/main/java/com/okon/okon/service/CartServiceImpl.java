@@ -20,13 +20,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<Cart> findByUserId(String userId) {
+    public Optional<Cart> findByUserId(Long userId) {
         log.debug("findById {}", userId);
         return cartRepository.findByUserId(userId);
     }
 
     @Override
-    public void clearByUserId(String userId) {
+    public void clearByUserId(Long userId) {
         log.debug("clearByUserId {}", userId);
         cartRepository.clearByUserId(userId);
     }

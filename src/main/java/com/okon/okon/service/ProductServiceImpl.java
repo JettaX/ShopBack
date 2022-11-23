@@ -6,6 +6,7 @@ import com.okon.okon.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
@@ -33,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(int id) {
+    public Optional<Product> findById(Long id) {
         log.debug("findById {} ", id);
         return productRepository.findById(id);
     }
@@ -51,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         log.debug("deleteById {} ", id);
         productRepository.deleteById(id);
     }

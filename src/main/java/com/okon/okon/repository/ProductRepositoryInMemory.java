@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ProductRepositoryInMemory implements ProductRepository {
-    private static Map<Integer, Product> products = new HashMap<>();
+    private static Map<Long, Product> products = new HashMap<>();
 
     @Override
     public Product insert(Product product) {
@@ -16,7 +16,7 @@ public class ProductRepositoryInMemory implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findById(int id) {
+    public Optional<Product> findById(Long id) {
         return Optional.ofNullable(products.get(id));
     }
 
@@ -34,7 +34,7 @@ public class ProductRepositoryInMemory implements ProductRepository {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         products.remove(id);
     }
 }

@@ -4,32 +4,30 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@ToString
 @Entity
-@Table(name = "products")
-public class Product implements Serializable {
+@Table(name = "bought_product")
+@Builder
+public class BoughtProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private Integer price;
-    private String image;
-
+    @ManyToOne
+    private Product product;
+    private Long price;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product product = (Product) o;
-        return id != null && Objects.equals(id, product.id);
+        BoughtProduct that = (BoughtProduct) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override

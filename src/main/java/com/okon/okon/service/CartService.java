@@ -8,7 +8,7 @@ public interface CartService {
 
     Cart insert(Cart cart);
 
-    Optional<Cart> findByUserId(String userId);
+    Optional<Cart> findByUserId(Long userId);
 
-    void clearByUserId(String userId);
+    void clearByUserId(Long userId);
 }

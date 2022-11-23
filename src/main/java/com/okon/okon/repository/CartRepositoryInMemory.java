@@ -9,20 +9,20 @@ import java.util.Optional;
 
 @Repository
 public class CartRepositoryInMemory implements CartRepository {
-    private static Map<String, Cart> carts = new HashMap<>();
+    private static Map<Long, Cart> carts = new HashMap<>();
 
     @Override
     public Cart insert(Cart cart) {
-        return carts.put(cart.getUserId(),cart);
+        return carts.put(cart.getUser().getId(),cart);
     }
 
     @Override
-    public Optional<Cart> findByUserId(String userId) {
+    public Optional<Cart> findByUserId(Long userId) {
         return Optional.ofNullable(carts.get(userId));
     }
 
     @Override
-    public void clearByUserId(String userId) {
+    public void clearByUserId(Long userId) {
         carts.remove(userId);
     }
 }

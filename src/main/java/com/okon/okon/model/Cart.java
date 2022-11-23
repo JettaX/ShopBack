@@ -11,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
-    private String userId;
+    private Long id;
+    private User user;
     private List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {

@@ -12,11 +12,11 @@ public interface ProductService {
 
     Product insertFromDTO(ProductDTO productDTO);
 
-    Optional<Product> findById(int id);
+    Optional<Product> findById(Long id);
 
     List<Product> findAll();
 
     List<Product> findByName(String name);
 
-    void deleteById(String id);
+    void deleteById(Long id);
 }

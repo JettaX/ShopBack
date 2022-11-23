@@ -25,6 +25,21 @@ public class RandomProduct {
         return products;
     }
 
+    public static List<Product> getNotRandomProduct() {
+        Pictures[] pictures = getPictures(5);
+        List<Product> products = new ArrayList<>();
+
+        for (int i = 0; i < 5; ++i) {
+            products.add(Product.builder()
+                    .name("Product_" + i)
+                    .description("Description_" + i)
+                    .price(new Random().nextInt(1000))
+                    .image(pictures[i].getDownload_url())
+                    .build());
+        }
+        return products;
+    }
+
     private static Pictures[] getPictures(int size) {
         String url = "https://picsum.photos/v2/list?page=2&limit=" + size;
         HttpHeaders headers = new HttpHeaders();
