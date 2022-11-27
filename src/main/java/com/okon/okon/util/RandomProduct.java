@@ -14,12 +14,15 @@ public class RandomProduct {
         Pictures[] pictures = getPictures(size);
         List<Product> products = new ArrayList<>();
 
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0, p = 0; i < size; ++i, p++) {
+            if (p >= pictures.length) {
+                p = 0;
+            }
             products.add(Product.builder()
                     .name(RandomStringUtils.random(5))
                     .description(RandomStringUtils.random(150))
                     .price(new Random().nextInt(1000))
-                    .image(pictures[i].getDownload_url())
+                    .image(pictures[p].getDownload_url())
                     .build());
         }
         return products;

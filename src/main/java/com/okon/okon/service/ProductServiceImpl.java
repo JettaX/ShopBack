@@ -44,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll(Filter filter) {
-        return productRepositoryCustom.findAllByFilter(filter);
+    public List<Product> findAllByFilter(Filter filter, int offset, int limit) {
+        return productRepositoryCustom.findAllByFilter(filter, offset, limit);
     }
 
     @Override
@@ -58,5 +58,10 @@ public class ProductServiceImpl implements ProductService {
     public void deleteById(Long id) {
         log.debug("deleteById {} ", id);
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getCountProducts(Filter filter) {
+        return productRepository.count();
     }
 }

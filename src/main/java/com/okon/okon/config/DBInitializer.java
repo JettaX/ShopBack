@@ -127,6 +127,6 @@ public class DBInitializer {
     }
 
     private void initProducts(ProductService productService) {
-        RandomProduct.getNotRandomProduct().forEach(productService::insert);
+        RandomProduct.getRandomProduct(300).forEach(productService::insert);
     }
 }

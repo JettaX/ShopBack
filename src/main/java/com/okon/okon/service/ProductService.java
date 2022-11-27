@@ -15,9 +15,11 @@ public interface ProductService {
 
     Optional<Product> findById(Long id);
 
-    List<Product> findAll(Filter filter);
+    List<Product> findAllByFilter(Filter filter, int offset, int limit);
 
     List<Product> findByName(String name);
 
     void deleteById(Long id);
+
+    Long getCountProducts(Filter filter);
 }

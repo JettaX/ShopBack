@@ -6,5 +6,5 @@ import com.okon.okon.model.Product;
 import java.util.List;
 
 public interface ProductRepositoryCustom {
-    List<Product> findAllByFilter(Filter filter);
+    List<Product> findAllByFilter(Filter filter, int offset, int limit);
 }

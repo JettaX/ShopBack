@@ -20,9 +20,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/getProducts")
-    public List<Product> getProducts(@RequestBody Filter filter) {
+    public List<Product> getProducts(@RequestBody Filter filter, @RequestParam int offset, @RequestParam int limit) {
         log.info("getProducts");
-        return productService.findAll(filter);
+        return productService.findAllByFilter(filter, offset, limit);
     }
 
     @GetMapping("/getProductsByName/{productName}")
@@ -35,6 +35,12 @@ public class ProductController {
     public Optional<Product> getProductsById(@PathVariable Long id) {
         log.info("getProductsById: {}", id);
         return productService.findById(id);
+    }
+
+    @PostMapping("/getCountProducts")
+    public Long getCountProducts(@RequestBody Filter filter) {
+        log.info("getCountProduct: {}", filter);
+        return productService.getCountProducts(filter);
     }
 
     @PostMapping("/addProduct")
