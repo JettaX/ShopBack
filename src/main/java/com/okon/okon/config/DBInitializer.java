@@ -71,6 +71,11 @@ public class DBInitializer {
                 .products(List.of(boughtProduct1, boughtProduct2, boughtProduct3))
                 .build();
 
+        Order order11 = Order.builder()
+                .user(user1)
+                .products(List.of(boughtProduct1))
+                .build();
+
         Order order2 = Order.builder()
                 .user(user2)
                 .products(List.of(boughtProduct2, boughtProduct3, boughtProduct4, boughtProduct5))
@@ -92,6 +97,7 @@ public class DBInitializer {
                 .build();
 
         ordersService.insert(order1);
+        ordersService.insert(order11);
         ordersService.insert(order2);
         ordersService.insert(order3);
         ordersService.insert(order4);

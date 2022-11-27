@@ -16,7 +16,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart insert(Cart cart) {
-        return cartRepository.insert(cart);
+        return cartRepository.save(cart);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public void clearByUserId(Long userId) {
         log.debug("clearByUserId {}", userId);
-        cartRepository.clearByUserId(userId);
+        cartRepository.removeAllByUserId(userId);
     }
 }

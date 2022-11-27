@@ -14,9 +14,9 @@ spring:
     generate-ddl: true
 
   datasource:
-    url: YOUR_URL
-    username: YOUR_USERNAME
-    password: YOUR_PASSWORD
+    url: jdbc:postgresql://localhost:5455/Geek
+    username: kekNya
+    password: f8wy3dmi
     driver-class-name: org.postgresql.Driver
 
   #datasource:

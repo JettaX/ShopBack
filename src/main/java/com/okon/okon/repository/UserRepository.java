@@ -1,10 +1,8 @@
 package com.okon.okon.repository;
 
 import com.okon.okon.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-public interface UserRepository {
-    User insert(User user);
-    Optional<User> findById(Long id);
 }

@@ -52,4 +52,11 @@ public class OrdersRepositoryJPA implements OrdersRepository {
                 .setParameter("id", productId)
                 .getResultList();
     }
+
+    @Override
+    public Long getCountOfBought(Long productId) {
+        return (Long) em.createQuery("select count (*) FROM Order o join o.products as p on p.id = :id")
+                .setParameter("id", productId)
+                .getSingleResult();
+    }
 }

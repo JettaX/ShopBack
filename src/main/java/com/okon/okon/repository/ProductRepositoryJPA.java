@@ -1,52 +1,24 @@
 package com.okon.okon.repository;
 
+import com.okon.okon.model.Filter;
 import com.okon.okon.model.Product;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class ProductRepositoryJPA implements ProductRepository {
-    @PersistenceContext
+public class ProductRepositoryJPA implements ProductRepositoryCustom {
+    @Autowired
     private EntityManager em;
 
     @Override
-    public Product insert(Product product) {
-        return em.merge(product);
-    }
-
-    @Override
-    public Optional<Product> findById(Long id) {
-        Product product = em
-                .createQuery("SELECT p FROM Product p WHERE p.id = :id", Product.class)
-                .setParameter("id", id)
-                .getSingleResult();
-        return Optional.ofNullable(product);
-    }
-
-    @Override
-    public List<Product> findAll() {
+    public List<Product> findAllByFilter(Filter filter) {
         return em
-                .createQuery("SELECT p FROM Product p", Product.class)
+                .createQuery("SELECT p FROM Product p where p.price < :max and p.price > :min", Product.class)
+                .setParameter("max", filter.getMaxValue())
+                .setParameter("min", filter.getMinValue())
                 .getResultList();
-    }
-
-    @Override
-    public List<Product> findByName(String name) {
-        return em
-                .createQuery("SELECT p FROM Product p WHERE p.name = :name", Product.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        em.createQuery("delete Product p where p.id = :id")
-                .setParameter("id", id);
     }
 }

@@ -1,6 +1,7 @@
 package com.okon.okon.service;
 
 import com.okon.okon.dto.ProductDTO;
+import com.okon.okon.model.Filter;
 import com.okon.okon.model.Product;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ProductService {
 
     Optional<Product> findById(Long id);
 
-    List<Product> findAll();
+    List<Product> findAll(Filter filter);
 
     List<Product> findByName(String name);
 

@@ -1,8 +1,10 @@
 package com.okon.okon.service;
 
 import com.okon.okon.dto.ProductDTO;
+import com.okon.okon.model.Filter;
 import com.okon.okon.model.Product;
 import com.okon.okon.repository.ProductRepository;
+import com.okon.okon.repository.ProductRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,12 @@ import java.util.Optional;
 @Transactional
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductRepositoryCustom productRepositoryCustom;
 
     @Override
     public Product insert(Product product) {
         log.debug("inserting product {}", product);
-        return productRepository.insert(product);
+        return productRepository.save(product);
     }
 
     @Override
@@ -41,9 +44,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        log.debug("findAll");
-        return productRepository.findAll();
+    public List<Product> findAll(Filter filter) {
+        return productRepositoryCustom.findAllByFilter(filter);
     }
 
     @Override

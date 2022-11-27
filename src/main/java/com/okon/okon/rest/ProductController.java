@@ -1,6 +1,7 @@
 package com.okon.okon.rest;
 
 import com.okon.okon.dto.ProductDTO;
+import com.okon.okon.model.Filter;
 import com.okon.okon.model.Product;
 import com.okon.okon.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,10 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/getProducts")
-    public List<Product> getProducts() {
+    @PostMapping("/getProducts")
+    public List<Product> getProducts(@RequestBody Filter filter) {
         log.info("getProducts");
-        return productService.findAll();
+        return productService.findAll(filter);
     }
 
     @GetMapping("/getProductsByName/{productName}")

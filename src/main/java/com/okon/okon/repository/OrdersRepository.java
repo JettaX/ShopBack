@@ -14,4 +14,5 @@ public interface OrdersRepository {
     List<Order> findByUserId(Long userId);
     Optional<Order> findById(Long id);
     List<User> findUsersByProduct(Long productId);
+    Long getCountOfBought(Long productId);
 }

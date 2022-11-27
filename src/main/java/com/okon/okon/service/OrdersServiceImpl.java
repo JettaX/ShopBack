@@ -33,7 +33,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Long getCountOfBought(Long productId) {
-        return Long.valueOf(ordersRepository.findUsersByProduct(productId).size());
+        return ordersRepository.getCountOfBought(productId);
     }
 
     @Override
