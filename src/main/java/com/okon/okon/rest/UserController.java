@@ -11,12 +11,12 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 @CrossOrigin("*")
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/getUser/{id}")
+    @GetMapping("/{id}")
     public Optional<User> getUser(@PathVariable Long id) {
         return userService.findById(id);
     }

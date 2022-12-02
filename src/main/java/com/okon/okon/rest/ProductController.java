@@ -1,11 +1,11 @@
 package com.okon.okon.rest;
 
 import com.okon.okon.dto.ProductDTO;
-import com.okon.okon.model.Filter;
 import com.okon.okon.model.Product;
 import com.okon.okon.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,42 +14,40 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/products")
 @CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping("/getProducts")
-    public List<Product> getProducts(@RequestBody Filter filter, @RequestParam int offset, @RequestParam int limit) {
-        log.info("getProducts");
-        return productService.findAllByFilter(filter, offset, limit);
+    @GetMapping
+    public Page<Product> getProducts(
+            @RequestParam(required = false) Integer maxPrice,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam Integer page,
+            @RequestParam Integer limit) {
+        log.info("maxPrice = " + maxPrice + ", minPrice = " + minPrice + "," + "page =" + page + ", limit =" + limit);
+        return productService.find(minPrice, maxPrice, page, limit);
     }
 
-    @GetMapping("/getProductsByName/{productName}")
+    @GetMapping("/findByName/{productName}")
     public List<Product> getProductsByName(@PathVariable String productName) {
         log.info("getProductsByName: {}", productName);
         return productService.findByName(productName);
     }
 
-    @GetMapping("/getProductsById/{id}")
+    @GetMapping("/{id}")
     public Optional<Product> getProductsById(@PathVariable Long id) {
         log.info("getProductsById: {}", id);
         return productService.findById(id);
     }
 
-    @PostMapping("/getCountProducts")
-    public Long getCountProducts(@RequestBody Filter filter) {
-        log.info("getCountProduct: {}", filter);
-        return productService.getCountProducts(filter);
-    }
-
-    @PostMapping("/addProduct")
+    @PostMapping
     public Product saveProduct(@RequestBody ProductDTO product) {
         log.info("Adding product: {}", product);
         return productService.insertFromDTO(product);
     }
 
-    @DeleteMapping("/deleteProduct/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         log.info("Deleting product: {}", id);
         productService.deleteById(id);
