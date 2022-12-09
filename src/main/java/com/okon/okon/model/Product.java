@@ -9,6 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,7 +23,6 @@ public class Product implements Serializable {
     private String description;
     private Integer price;
     private String image;
-
 
     @Override
     public boolean equals(Object o) {

@@ -1,48 +1,60 @@
 package com.okon.okon.model;
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "carts")
+@Builder
 public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @OneToOne
-    private User user;
-    @OneToMany
-    @ToString.Exclude
-    private List<Product> products = new ArrayList<>();
+    private Long userId;
+    private Set<CartItem> products = new HashSet<>();
 
-    public void addProduct(Product product) {
-        products.add(product);
+    public void addProduct(CartItem product) {
+        Optional<CartItem> item = findItem(product.getProduct().getId());
+        item.ifPresent(cartItem -> removeAndUpdateQuantity(product, cartItem.getQuantity() + 1));
+        addToProducts(products, product);
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
+    private void addToProducts(Set<CartItem> old, CartItem item) {
+        products = Stream
+                .concat(old.stream(), Stream.of(item))
+                .collect(Collectors.toSet());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Cart cart = (Cart) o;
-        return id != null && Objects.equals(id, cart.id);
+    private void removeAndUpdateQuantity(CartItem product, Integer quantity) {
+        removeProduct(product.getProduct().getId());
+        product.setQuantity(quantity);
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public Optional<CartItem> updateQuantity(Long productId, Integer quantity) {
+        Optional<CartItem> product = findItem(productId);
+        product.ifPresent(cartItem -> {
+            removeAndUpdateQuantity(product.get(), quantity);
+            addToProducts(products, product.get());
+        });
+
+        return product;
+    }
+
+    public void removeProduct(Long productId) {
+        products.remove(findItem(productId).get());
+    }
+
+    public boolean containsProduct(Long productId) {
+        return products.stream().anyMatch(product -> product.getProduct().getId().equals(productId));
+    }
+
+    private Optional<CartItem> findItem(Long itemId) {
+        return products.stream().filter(p -> p.getProduct().getId().equals(itemId)).findFirst();
     }
 }
