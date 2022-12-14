@@ -5,6 +5,11 @@ server:
       charset: UTF-8
       enabled: true
 
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
+
+
 spring:
   mandatory-file-encoding: UTF-8
 
@@ -13,14 +18,14 @@ spring:
       ddl-auto: create-drop
     generate-ddl: true
 
-  datasource:
-    url: jdbc:postgresql://localhost:5455/Geek
-    username: kekNya
-    password: f8wy3dmi
-    driver-class-name: org.postgresql.Driver
-
   #datasource:
-  #  url: jdbc:h2:mem:test
-  #  username: sa
-  #  password:
-  #  driver-class-name: org.h2.Driver
+  #  url: jdbc:postgresql://localhost:5455/Geek
+  #  username: kekNya
+  #  password: f8wy3dmi
+  #  driver-class-name: org.postgresql.Driver
+
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver

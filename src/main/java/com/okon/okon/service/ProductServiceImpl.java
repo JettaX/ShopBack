@@ -43,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product insertFromDTO(ProductDTO productDTO) {
         return insert(Product.builder()
+                .id(productDTO.getId())
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())

@@ -40,6 +40,4 @@ public class OrdersServiceImpl implements OrdersService {
     public Optional<Order> findById(Long id) {
         return ordersRepository.findById(id);
     }
-
-
 }

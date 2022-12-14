@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -20,6 +21,10 @@ public class User {
     private Long id;
     private String name;
     private String surname;
+    private String username;
+    private String password;
+    @ManyToMany
+    private List<Role> roles;
 
     @Override
     public boolean equals(Object o) {

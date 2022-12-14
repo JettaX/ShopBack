@@ -6,6 +6,7 @@ import com.okon.okon.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,12 +42,22 @@ public class ProductController {
         return productService.findById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
     @PostMapping
     public Product saveProduct(@RequestBody ProductDTO product) {
         log.info("Adding product: {}", product);
         return productService.insertFromDTO(product);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
+    @PostMapping("/update/{id}")
+    public Product updateProduct(@RequestBody ProductDTO product, @PathVariable Long id) {
+        product.setId(id);
+        log.info("Update product: {}", product);
+        return productService.insertFromDTO(product);
+    }
+
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         log.info("Deleting product: {}", id);

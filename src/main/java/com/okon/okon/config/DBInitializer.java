@@ -1,9 +1,7 @@
 package com.okon.okon.config;
 
-import com.okon.okon.model.BoughtProduct;
-import com.okon.okon.model.Order;
-import com.okon.okon.model.Product;
-import com.okon.okon.model.User;
+import com.okon.okon.model.*;
+import com.okon.okon.repository.RoleRepository;
 import com.okon.okon.service.OrdersService;
 import com.okon.okon.service.ProductService;
 import com.okon.okon.service.UserService;
@@ -19,8 +17,8 @@ public class DBInitializer {
 
     @Autowired
     public void DBInitialization(ProductService productService, UserService userService,
-                                 OrdersService ordersService) {
-        initUsers(userService);
+                                 OrdersService ordersService, RoleRepository roleRepository) {
+        initUsers(userService, roleRepository);
         initProducts(productService);
         initOrders(ordersService, userService, productService);
     }
@@ -96,28 +94,44 @@ public class DBInitializer {
                 .products(List.of(boughtProduct5))
                 .build();
 
-        ordersService.insert(order1);
+        /*ordersService.insert(order1);
         ordersService.insert(order11);
         ordersService.insert(order2);
         ordersService.insert(order3);
         ordersService.insert(order4);
-        ordersService.insert(order5);
+        ordersService.insert(order5);*/
     }
 
-    private void initUsers(UserService userService) {
+    private void initUsers(UserService userService, RoleRepository roleRepository) {
+        Role roleUser = Role.builder().name("USER").build();
+        roleUser = roleRepository.save(roleUser);
+        Role roleAdmin = Role.builder().name("ADMIN").build();
+        roleAdmin = roleRepository.save(roleAdmin);
+        Role roleSUPERAdmin = Role.builder().name("SUPER_ADMIN").build();
+        roleSUPERAdmin = roleRepository.save(roleSUPERAdmin);
+
         User user0 = User.builder()
-                .name("admin")
-                .surname("admin")
+                .name("superadmin")
+                .surname("superadmin")
+                .username("superadmin")
+                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
+                .roles(List.of(roleSUPERAdmin))
                 .build();
 
         User user1 = User.builder()
-                .name("user_1")
-                .surname("user_1")
+                .name("admin")
+                .surname("admin")
+                .username("admin")
+                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
+                .roles(List.of(roleAdmin))
                 .build();
 
         User user2 = User.builder()
-                .name("user_2")
-                .surname("user_2")
+                .name("user")
+                .surname("user")
+                .username("user")
+                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
+                .roles(List.of(roleUser))
                 .build();
 
         userService.insert(user0);
@@ -127,6 +141,6 @@ public class DBInitializer {
     }
 
     private void initProducts(ProductService productService) {
-        RandomProduct.getRandomProduct(300).forEach(productService::insert);
+        RandomProduct.getRandomProduct(5).forEach(productService::insert);
     }
 }
