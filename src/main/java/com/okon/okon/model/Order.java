@@ -2,8 +2,6 @@ package com.okon.okon.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,7 +22,6 @@ public class Order {
     @ManyToOne
     private User user;
     @ManyToMany()
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private List<BoughtProduct> products;
 

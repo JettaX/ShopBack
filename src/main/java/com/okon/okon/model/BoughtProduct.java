@@ -2,8 +2,6 @@ package com.okon.okon.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -20,10 +18,10 @@ public class BoughtProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne()
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Product product;
+    private Long productId;
+    private String name;
     private Long price;
+    private String image;
 
     @Override
     public boolean equals(Object o) {

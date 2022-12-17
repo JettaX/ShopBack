@@ -1,5 +1,9 @@
 package com.okon.okon.rest;
 
+import com.okon.okon.converter.ModelConverter;
+import com.okon.okon.model.Credentials;
+import com.okon.okon.repository.UserRepository;
+import com.okon.okon.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -18,10 +22,13 @@ import java.util.stream.Collectors;
 @RequestMapping("api/auth")
 @CrossOrigin("*")
 public class AuthController {
+    private final UserRepository userRepository;
     private final JwtEncoder encoder;
+    private final UserService userService;
+    private final ModelConverter modelConverter;
 
     @PostMapping
-    public String token(Authentication authentication) {
+    public Credentials token(Authentication authentication) {
         log.info(authentication.toString());
         Instant now = Instant.now();
         long expiry = 36000L;
@@ -35,6 +42,14 @@ public class AuthController {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return Credentials.builder()
+                .token(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue())
+                .user(modelConverter.userConvertToDTO(userRepository.findByUsername(authentication.getName())).get())
+                .build();
+    }
+
+    @GetMapping("/health")
+    public boolean getHealth() {
+        return true;
     }
 }

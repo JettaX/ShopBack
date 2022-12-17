@@ -1,6 +1,5 @@
 package com.okon.okon.service;
 
-import com.okon.okon.model.BoughtProduct;
 import com.okon.okon.model.Order;
 import com.okon.okon.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +17,17 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Order insert(Order order) {
-        return ordersRepository.insert(order);
+        return ordersRepository.save(order);
     }
 
     @Override
-    public BoughtProduct insertBoughtProduct(BoughtProduct product) {
-        return ordersRepository.insertBoughtProduct(product);
-    }
-
-    @Override
-    public List<Order> findByUserId(Long userId) {
+    public List<Order> findUserOrders(Long userId) {
         return ordersRepository.findByUserId(userId);
     }
 
     @Override
     public Long getCountOfBought(Long productId) {
-        return ordersRepository.getCountOfBought(productId);
+        return ordersRepository.countAllByProductId(productId);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.okon.okon.config;
 
 import com.okon.okon.model.*;
+import com.okon.okon.repository.BoughtProductRepository;
 import com.okon.okon.repository.RoleRepository;
+import com.okon.okon.service.BoughtProductService;
 import com.okon.okon.service.OrdersService;
 import com.okon.okon.service.ProductService;
 import com.okon.okon.service.UserService;
@@ -14,16 +16,21 @@ import java.util.List;
 
 @Component
 public class DBInitializer {
+    private final BoughtProductRepository boughtProductRepository;
+
+    public DBInitializer(BoughtProductRepository boughtProductRepository) {
+        this.boughtProductRepository = boughtProductRepository;
+    }
 
     @Autowired
     public void DBInitialization(ProductService productService, UserService userService,
-                                 OrdersService ordersService, RoleRepository roleRepository) {
+                                 OrdersService ordersService, RoleRepository roleRepository, BoughtProductService boughtProductService) {
         initUsers(userService, roleRepository);
         initProducts(productService);
-        initOrders(ordersService, userService, productService);
+        initOrders(ordersService, userService, productService, boughtProductService);
     }
 
-    private void initOrders(OrdersService ordersService, UserService userService, ProductService productService) {
+    private void initOrders(OrdersService ordersService, UserService userService, ProductService productService, BoughtProductService boughtProductService) {
         User user1 = userService.findById(1L).get();
         User user2 = userService.findById(2L).get();
         User user3 = userService.findById(3L).get();
@@ -34,35 +41,44 @@ public class DBInitializer {
         Product Product5 = productService.findById(5L).get();
 
         BoughtProduct boughtProduct1 = BoughtProduct.builder()
-                .product(Product1)
+                .productId(Product1.getId())
+                .name(Product1.getName())
+                .image(Product1.getImage())
                 .price(799L)
                 .build();
 
         BoughtProduct boughtProduct2 = BoughtProduct.builder()
-                .product(Product2)
+                .name(Product2.getName())
+                .image(Product2.getImage())
                 .price(999L)
                 .build();
 
         BoughtProduct boughtProduct3 = BoughtProduct.builder()
-                .product(Product3)
+                .productId(Product3.getId())
+                .name(Product3.getName())
+                .image(Product3.getImage())
                 .price(899L)
                 .build();
 
         BoughtProduct boughtProduct4 = BoughtProduct.builder()
-                .product(Product4)
+                .productId(Product4.getId())
+                .name(Product4.getName())
+                .image(Product4.getImage())
                 .price(699L)
                 .build();
 
         BoughtProduct boughtProduct5 = BoughtProduct.builder()
-                .product(Product5)
+                .productId(Product5.getId())
+                .name(Product5.getName())
+                .image(Product5.getImage())
                 .price(599L)
                 .build();
 
-        boughtProduct1 = ordersService.insertBoughtProduct(boughtProduct1);
-        boughtProduct2 = ordersService.insertBoughtProduct(boughtProduct2);
-        boughtProduct3 = ordersService.insertBoughtProduct(boughtProduct3);
-        boughtProduct4 = ordersService.insertBoughtProduct(boughtProduct4);
-        boughtProduct5 = ordersService.insertBoughtProduct(boughtProduct5);
+        boughtProduct1 = boughtProductService.insert(boughtProduct1);
+        boughtProduct2 = boughtProductService.insert(boughtProduct2);
+        boughtProduct3 = boughtProductService.insert(boughtProduct3);
+        boughtProduct4 = boughtProductService.insert(boughtProduct4);
+        boughtProduct5 = boughtProductService.insert(boughtProduct5);
 
         Order order1 = Order.builder()
                 .user(user1)
@@ -94,12 +110,12 @@ public class DBInitializer {
                 .products(List.of(boughtProduct5))
                 .build();
 
-        /*ordersService.insert(order1);
+        ordersService.insert(order1);
         ordersService.insert(order11);
         ordersService.insert(order2);
         ordersService.insert(order3);
         ordersService.insert(order4);
-        ordersService.insert(order5);*/
+        ordersService.insert(order5);
     }
 
     private void initUsers(UserService userService, RoleRepository roleRepository) {
