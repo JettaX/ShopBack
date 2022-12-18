@@ -24,14 +24,18 @@ public class CartController {
     }
 
     @PatchMapping("/{userId}/{productId}/{quantity}")
-    public Optional<CartItem> updateQuantityByProductIdAndUserId(@PathVariable Long userId, @PathVariable Long productId,
-                                                             @PathVariable Integer quantity) {
+    public Optional<CartItem> updateQuantityByProductIdAndUserId(
+            @PathVariable Long userId,
+            @PathVariable Long productId,
+            @PathVariable Integer quantity) {
         log.info("updateQuantityByProductIdAndUserId {}, productId {} and quantity {}", userId, productId, quantity);
         return cartService.updateQuantity(userId, productId, quantity);
     }
 
-    @PostMapping("/{userId}")
-    public void addToCart(@PathVariable Long userId, @RequestBody CartItem cartItem) {
+    @PostMapping("/{userId}") // TODO replace CartItem on the productId and quantity
+    public void addToCart(
+            @PathVariable Long userId,
+            @RequestBody CartItem cartItem) {
         log.info("addToCart {} {}", userId, cartItem);
         cartService.insertToCart(cartItem, userId);
     }

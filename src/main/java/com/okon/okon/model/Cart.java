@@ -26,9 +26,13 @@ public class Cart {
     }
 
     private void addToProducts(Set<CartItem> old, CartItem item) {
-        products = Stream
-                .concat(old.stream(), Stream.of(item))
-                .collect(Collectors.toSet());
+        if (!old.isEmpty()) {
+            products = Stream
+                    .concat(old.stream(), Stream.of(item))
+                    .collect(Collectors.toSet());
+        } else {
+            products = new HashSet<>(Set.of(item));
+        }
     }
 
     private void removeAndUpdateQuantity(CartItem product, Integer quantity) {
@@ -39,15 +43,19 @@ public class Cart {
     public Optional<CartItem> updateQuantity(Long productId, Integer quantity) {
         Optional<CartItem> product = findItem(productId);
         product.ifPresent(cartItem -> {
-            removeAndUpdateQuantity(product.get(), quantity);
-            addToProducts(products, product.get());
+            removeAndUpdateQuantity(cartItem, quantity);
+            addToProducts(products, cartItem);
         });
-
         return product;
     }
 
     public void removeProduct(Long productId) {
-        products.remove(findItem(productId).get());
+        Optional<CartItem> item = findItem(productId);
+        if (products.size() == 1 && item.isPresent()) {
+            products = new HashSet<>();
+        } else {
+            products.remove(item.get());
+        }
     }
 
     public boolean containsProduct(Long productId) {
