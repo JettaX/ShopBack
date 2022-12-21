@@ -21,7 +21,7 @@ public class Product implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private Integer price;
+    private Long price;
     private String image;
 
     @Override

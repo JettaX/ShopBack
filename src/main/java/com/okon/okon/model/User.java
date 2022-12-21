@@ -21,6 +21,7 @@ public class User {
     private Long id;
     private String name;
     private String surname;
+    @Column(unique = true)
     private String username;
     private String password;
     @ManyToMany

@@ -5,6 +5,8 @@ import com.okon.okon.repository.BoughtProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoughtProductServiceImpl implements BoughtProductService {
@@ -14,4 +16,11 @@ public class BoughtProductServiceImpl implements BoughtProductService {
     public BoughtProduct insert(BoughtProduct product) {
         return boughtProductRepository.save(product);
     }
+
+    @Override
+    public List<BoughtProduct> insertAll(List<BoughtProduct> products) {
+        return boughtProductRepository.saveAll(products);
+    }
+
+
 }

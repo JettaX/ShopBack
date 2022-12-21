@@ -21,7 +21,7 @@ public class RandomProduct {
             products.add(Product.builder()
                     .name(RandomStringUtils.random(5))
                     .description(RandomStringUtils.random(150))
-                    .price(new Random().nextInt(1000))
+                    .price(new Random().nextLong(1000))
                     .image(pictures[p].getDownload_url())
                     .build());
         }
@@ -36,7 +36,7 @@ public class RandomProduct {
             products.add(Product.builder()
                     .name("Product_" + i)
                     .description("Description_" + i)
-                    .price(new Random().nextInt(1000))
+                    .price(new Random().nextLong(1000))
                     .image(pictures[i].getDownload_url())
                     .build());
         }

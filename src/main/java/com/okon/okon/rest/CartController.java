@@ -32,7 +32,7 @@ public class CartController {
         return cartService.updateQuantity(userId, productId, quantity);
     }
 
-    @PostMapping("/{userId}") // TODO replace CartItem on the productId and quantity
+    @PostMapping("/{userId}")
     public void addToCart(
             @PathVariable Long userId,
             @RequestBody CartItem cartItem) {

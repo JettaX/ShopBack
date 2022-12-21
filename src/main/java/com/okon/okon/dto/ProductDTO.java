@@ -13,6 +13,6 @@ public class ProductDTO implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private int price;
+    private Long price;
     private String image;
 }

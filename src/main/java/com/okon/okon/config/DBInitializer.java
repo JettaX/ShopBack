@@ -44,6 +44,7 @@ public class DBInitializer {
                 .productId(Product1.getId())
                 .name(Product1.getName())
                 .image(Product1.getImage())
+                .quantity(9)
                 .price(799L)
                 .build();
 
@@ -51,12 +52,14 @@ public class DBInitializer {
                 .name(Product2.getName())
                 .image(Product2.getImage())
                 .price(999L)
+                .quantity(3)
                 .build();
 
         BoughtProduct boughtProduct3 = BoughtProduct.builder()
                 .productId(Product3.getId())
                 .name(Product3.getName())
                 .image(Product3.getImage())
+                .quantity(1)
                 .price(899L)
                 .build();
 
@@ -64,6 +67,7 @@ public class DBInitializer {
                 .productId(Product4.getId())
                 .name(Product4.getName())
                 .image(Product4.getImage())
+                .quantity(2)
                 .price(699L)
                 .build();
 
@@ -71,6 +75,7 @@ public class DBInitializer {
                 .productId(Product5.getId())
                 .name(Product5.getName())
                 .image(Product5.getImage())
+                .quantity(6)
                 .price(599L)
                 .build();
 

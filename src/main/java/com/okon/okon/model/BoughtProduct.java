@@ -22,6 +22,7 @@ public class BoughtProduct {
     private String name;
     private Long price;
     private String image;
+    private Integer quantity;
 
     @Override
     public boolean equals(Object o) {

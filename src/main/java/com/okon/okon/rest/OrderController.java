@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -24,5 +25,11 @@ public class OrderController {
     @GetMapping("/getCountOfBought/{id}")
     public Long getCountOfBought(@PathVariable Long id) {
         return ordersService.getCountOfBought(id);
+    }
+
+    @PostMapping()
+    public void createOrder(Principal principal) {
+        log.info("create order for user {}", principal.getName());
+        ordersService.createOrder(principal);
     }
 }
