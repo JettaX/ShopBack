@@ -41,7 +41,9 @@ public class RestConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers(HttpMethod.GET, "/api/products");
+        return web -> web.ignoring()
+                .antMatchers(HttpMethod.GET, "/api/products")
+                .antMatchers(HttpMethod.POST, "/ws");
 
     }
 

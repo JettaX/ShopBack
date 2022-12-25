@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:f="http://www.okon.com/okon/products">
+
+	<soapenv:Header/>
+	<soapenv:Body>
+		<f:getProductsRequest/>
+	</soapenv:Body>
+</soapenv:Envelope>
