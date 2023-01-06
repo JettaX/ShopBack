@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -21,7 +22,7 @@ public class Product implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private Long price;
+    private BigDecimal price;
     private String image;
 
     @Override

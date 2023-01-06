@@ -6,12 +6,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class RandomProduct {
+
+    private static String[] randomProducts = {"lemon", "apple", "orange", "banana", "pineapple", "watermelon", "grapefruit", "grapes", "strawberry", "raspberry", "blueberry", "blackberry", "kiwi", "pear", "peach", "plum", "apricot", "cherry", "mango", "coconut", "avocado", "tomato", "potato", "cucumber", "onion", "garlic", "carrot", "broccoli", "cauliflower", "spinach", "lettuce", "cabbage", "celery", "asparagus", "mushroom", "peas", "beans", "corn", "sweet potato", "eggplant", "zucchini", "pumpkin", "squash", "beetroot", "radish", "turnip", "ginger", "garlic", "leek", "cress", "artichoke", "olive", "pepper", "chili"};
 
     public static List<Product> getRandomProduct(int size) {
         Pictures[] pictures = getPictures(size);
@@ -24,7 +27,7 @@ public class RandomProduct {
             products.add(Product.builder()
                     .name(RandomStringUtils.random(5))
                     .description(RandomStringUtils.random(150))
-                    .price(new Random().nextLong(1000))
+                    .price(new BigDecimal(new Random().nextDouble(1000)))
                     .image(pictures[p].getDownload_url())
                     .build());
         }
@@ -32,14 +35,14 @@ public class RandomProduct {
     }
 
     public static List<Product> getNotRandomProduct() {
-        Pictures[] pictures = getPictures(5);
+        Pictures[] pictures = getPictures(randomProducts.length);
         List<Product> products = new ArrayList<>();
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < randomProducts.length; ++i) {
             products.add(Product.builder()
-                    .name("Product_" + i)
+                    .name(randomProducts[i])
                     .description("Description_" + i)
-                    .price(new Random().nextLong(1000))
+                    .price(new BigDecimal(new Random().nextDouble(1000)))
                     .image(pictures[i].getDownload_url())
                     .build());
         }

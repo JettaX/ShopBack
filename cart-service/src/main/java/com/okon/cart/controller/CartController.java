@@ -18,7 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/cart")
-@CrossOrigin("*")
 public class CartController {
     private final CartService cartService;
     private final CartConvertor cartConvertor;

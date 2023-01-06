@@ -1,23 +1,26 @@
 package com.okon.cart.integration;
 
 import com.okon.api.dto.ProductDTO;
+import com.okon.api.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
 public class ProductServiceIntegration {
-    private final RestTemplate restTemplate;
-    @Value("${api.products.url}")
-    private String baseUrl;
-    private final String urlSeparator = "/";
+    private final WebClient productServiceWebClient;
 
-    public Optional<ProductDTO> getProductById(Long id) {
-        ProductDTO productDTO = restTemplate.getForObject(baseUrl + urlSeparator + id, ProductDTO.class);
-        return Optional.ofNullable(productDTO);
+    public ProductDTO getProductById(Long id) {
+        return productServiceWebClient.get()
+                .uri("/" + id)
+                .retrieve()
+                .onStatus(
+                        httpStatus -> httpStatus.value() == HttpStatus.NOT_FOUND.value(),
+                        clientResponse -> Mono.error(new ResourceNotFoundException("Product not found in product MC")))
+                .bodyToMono(ProductDTO.class)
+                .block();
     }
 }

@@ -1,9 +1,8 @@
-package com.okon.core.service;
+package com.okon.auth.service;
 
-
-import com.okon.core.model.Role;
-import com.okon.core.repository.UserRepository;
-import com.okon.core.model.User;
+import com.okon.auth.model.Role;
+import com.okon.auth.model.User;
+import com.okon.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

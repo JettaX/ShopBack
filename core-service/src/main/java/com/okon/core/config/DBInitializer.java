@@ -1,16 +1,17 @@
 package com.okon.core.config;
 
-import com.okon.core.model.*;
+import com.okon.core.model.BoughtProduct;
+import com.okon.core.model.Order;
+import com.okon.core.model.Product;
 import com.okon.core.repository.BoughtProductRepository;
-import com.okon.core.repository.RoleRepository;
 import com.okon.core.service.BoughtProductService;
 import com.okon.core.service.OrdersService;
 import com.okon.core.service.ProductService;
-import com.okon.core.service.UserService;
 import com.okon.core.util.RandomProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -23,17 +24,16 @@ public class DBInitializer {
     }
 
     @Autowired
-    public void DBInitialization(ProductService productService, UserService userService,
-                                 OrdersService ordersService, RoleRepository roleRepository, BoughtProductService boughtProductService) {
-        initUsers(userService, roleRepository);
+    public void DBInitialization(ProductService productService,
+                                 OrdersService ordersService, BoughtProductService boughtProductService) {
         initProducts(productService);
-        initOrders(ordersService, userService, productService, boughtProductService);
+        initOrders(ordersService, productService, boughtProductService);
     }
 
-    private void initOrders(OrdersService ordersService, UserService userService, ProductService productService, BoughtProductService boughtProductService) {
-        User user1 = userService.findById(1L).get();
-        User user2 = userService.findById(2L).get();
-        User user3 = userService.findById(3L).get();
+    private void initOrders(OrdersService ordersService, ProductService productService, BoughtProductService boughtProductService) {
+        String user1 = "user";
+        String user2 = "admin";
+        String user3 = "superadmin";
         Product Product1 = productService.findById(1L).get();
         Product Product2 = productService.findById(2L).get();
         Product Product3 = productService.findById(3L).get();
@@ -45,13 +45,13 @@ public class DBInitializer {
                 .name(Product1.getName())
                 .image(Product1.getImage())
                 .quantity(9)
-                .price(799L)
+                .price(new BigDecimal(799))
                 .build();
 
         BoughtProduct boughtProduct2 = BoughtProduct.builder()
                 .name(Product2.getName())
                 .image(Product2.getImage())
-                .price(999L)
+                .price(new BigDecimal(999))
                 .quantity(3)
                 .build();
 
@@ -60,7 +60,7 @@ public class DBInitializer {
                 .name(Product3.getName())
                 .image(Product3.getImage())
                 .quantity(1)
-                .price(899L)
+                .price(new BigDecimal(899))
                 .build();
 
         BoughtProduct boughtProduct4 = BoughtProduct.builder()
@@ -68,7 +68,7 @@ public class DBInitializer {
                 .name(Product4.getName())
                 .image(Product4.getImage())
                 .quantity(2)
-                .price(699L)
+                .price(new BigDecimal(699))
                 .build();
 
         BoughtProduct boughtProduct5 = BoughtProduct.builder()
@@ -76,7 +76,7 @@ public class DBInitializer {
                 .name(Product5.getName())
                 .image(Product5.getImage())
                 .quantity(6)
-                .price(599L)
+                .price(new BigDecimal(599))
                 .build();
 
         boughtProduct1 = boughtProductService.insert(boughtProduct1);
@@ -86,34 +86,41 @@ public class DBInitializer {
         boughtProduct5 = boughtProductService.insert(boughtProduct5);
 
         Order order1 = Order.builder()
-                .user(user1)
+                .username(user1)
                 .products(List.of(boughtProduct1, boughtProduct2, boughtProduct3))
                 .build();
 
         Order order11 = Order.builder()
-                .user(user1)
+                .username(user1)
                 .products(List.of(boughtProduct1))
                 .build();
 
         Order order2 = Order.builder()
-                .user(user2)
+                .username(user2)
                 .products(List.of(boughtProduct2, boughtProduct3, boughtProduct4, boughtProduct5))
                 .build();
 
         Order order3 = Order.builder()
-                .user(user3)
+                .username(user3)
                 .products(List.of(boughtProduct4, boughtProduct5))
                 .build();
 
         Order order4 = Order.builder()
-                .user(user1)
+                .username(user1)
                 .products(List.of(boughtProduct4))
                 .build();
 
         Order order5 = Order.builder()
-                .user(user1)
+                .username(user1)
                 .products(List.of(boughtProduct5))
                 .build();
+
+        order1.calculateTotalPrice();
+        order11.calculateTotalPrice();
+        order2.calculateTotalPrice();
+        order3.calculateTotalPrice();
+        order4.calculateTotalPrice();
+        order5.calculateTotalPrice();
 
         ordersService.insert(order1);
         ordersService.insert(order11);
@@ -123,7 +130,7 @@ public class DBInitializer {
         ordersService.insert(order5);
     }
 
-    private void initUsers(UserService userService, RoleRepository roleRepository) {
+    /*private void initUsers(UserService userService, RoleRepository roleRepository) {
         Role roleUser = Role.builder().name("USER").build();
         roleUser = roleRepository.save(roleUser);
         Role roleAdmin = Role.builder().name("ADMIN").build();
@@ -158,10 +165,10 @@ public class DBInitializer {
         userService.insert(user0);
         userService.insert(user1);
         userService.insert(user2);
-
-    }
+    }*/
 
     private void initProducts(ProductService productService) {
-        RandomProduct.getRandomProduct(5).forEach(productService::insert);
+        /*RandomProduct.getRandomProduct(5).forEach(productService::insert);*/
+        RandomProduct.getNotRandomProduct().forEach(productService::insert);
     }
 }

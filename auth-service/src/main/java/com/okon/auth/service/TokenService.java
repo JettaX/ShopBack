@@ -1,7 +1,7 @@
-package com.okon.core.service;
+package com.okon.auth.service;
 
-import com.okon.core.converter.UserConverter;
-import com.okon.core.model.Credentials;
+import com.okon.auth.converter.UserConverter;
+import com.okon.auth.model.Credentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

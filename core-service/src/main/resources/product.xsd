@@ -20,7 +20,7 @@
 			<xs:element name="id" type="xs:long"/>
 			<xs:element name="name" type="xs:string"/>
 			<xs:element name="description" type="xs:string"/>
-			<xs:element name="price" type="xs:long"/>
+			<xs:element name="price" type="xs:decimal"/>
 			<xs:element name="image" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>

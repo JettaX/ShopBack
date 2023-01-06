@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class BoughtProduct {
     private Long id;
     private Long productId;
     private String name;
-    private Long price;
+    private BigDecimal price;
     private String image;
     private Integer quantity;
 

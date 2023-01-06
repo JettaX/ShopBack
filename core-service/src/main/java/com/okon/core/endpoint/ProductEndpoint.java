@@ -12,7 +12,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 @Endpoint
 @RequiredArgsConstructor
 public class ProductEndpoint {
-    private final static String NAMESPACE_URI = "http://www.okon.com/okon/products";
+    private final String NAMESPACE_URI = "http://www.okon.com/okon/products";
     private final ProductServiceSoap productServiceSoap;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getProductsRequest")

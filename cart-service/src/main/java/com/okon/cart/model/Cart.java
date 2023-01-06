@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -18,11 +19,13 @@ import java.util.stream.Stream;
 public class Cart {
     private Long userId;
     private Set<CartItem> products = new HashSet<>();
+    private BigDecimal total;
 
     public void addProduct(CartItem product) {
         Optional<CartItem> item = findItem(product.getProduct().getId());
         item.ifPresent(cartItem -> removeAndUpdateQuantity(product, cartItem.getQuantity() + 1));
         addToProducts(products, product);
+        calculateTotal();
     }
 
     private void addToProducts(Set<CartItem> old, CartItem item) {
@@ -46,6 +49,7 @@ public class Cart {
             removeAndUpdateQuantity(cartItem, quantity);
             addToProducts(products, cartItem);
         });
+        calculateTotal();
         return product;
     }
 
@@ -64,5 +68,11 @@ public class Cart {
 
     private Optional<CartItem> findItem(Long itemId) {
         return products.stream().filter(p -> p.getProduct().getId().equals(itemId)).findFirst();
+    }
+
+    private void calculateTotal() {
+        total = products.stream()
+                .map(cartItem -> cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

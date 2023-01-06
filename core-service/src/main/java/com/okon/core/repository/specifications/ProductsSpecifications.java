@@ -15,4 +15,9 @@ public class ProductsSpecifications {
         return (root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice);
     }
+
+    public static Specification<Product> nameStartWith(String name) {
+        return (root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("name"), name + "%");
+    }
 }

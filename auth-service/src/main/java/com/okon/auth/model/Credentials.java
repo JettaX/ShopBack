@@ -1,4 +1,4 @@
-package com.okon.core.model;
+package com.okon.auth.model;
 
 import com.okon.api.dto.UserDTO;
 import lombok.AllArgsConstructor;

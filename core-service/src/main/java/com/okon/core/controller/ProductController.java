@@ -7,7 +7,6 @@ import com.okon.core.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/products")
-@CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
 
@@ -25,10 +23,11 @@ public class ProductController {
     public Page<Product> getProducts(
             @RequestParam(required = false) Integer maxPrice,
             @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) String name,
             @RequestParam Integer page,
             @RequestParam Integer limit) {
-        log.info("maxPrice = " + maxPrice + ", minPrice = " + minPrice + "," + "page =" + page + ", limit =" + limit);
-        return productService.find(minPrice, maxPrice, page, limit);
+        log.info("getProducts with maxPrice {}, minPrice {}, name {}, page {}, limit {}", maxPrice, minPrice, name, page, limit);
+        return productService.find(minPrice, maxPrice, page, limit, name);
     }
 
     @GetMapping("/findByName/{productName}")
@@ -43,22 +42,19 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
     @PostMapping
     public Product saveProduct(@RequestBody ProductDTO product) {
         log.info("Adding product: {}", product);
         return productService.insertFromDTO(product);
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
     @PostMapping("/update/{id}")
     public Product updateProduct(@RequestBody ProductDTO product, @PathVariable Long id) {
         product.setId(id);
         log.info("Update product: {}", product);
         return productService.insertFromDTO(product);
     }
-
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
+    
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         log.info("Deleting product: {}", id);

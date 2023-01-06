@@ -1,8 +1,8 @@
-package com.okon.core.controller;
+package com.okon.auth.controller;
 
 
-import com.okon.core.model.Credentials;
-import com.okon.core.service.TokenService;
+import com.okon.auth.model.Credentials;
+import com.okon.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/auth")
-@CrossOrigin("*")
 public class AuthController {
     private final TokenService tokenService;
 

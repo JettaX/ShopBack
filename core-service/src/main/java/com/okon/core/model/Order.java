@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,11 +20,17 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private User user;
+    private String username;
     @ManyToMany()
     @ToString.Exclude
     private List<BoughtProduct> products;
+    private BigDecimal totalPrice;
+
+    public void calculateTotalPrice() {
+        totalPrice = products.stream()
+                .map(boughtProduct -> boughtProduct.getPrice().multiply(BigDecimal.valueOf(boughtProduct.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
     @Override
     public boolean equals(Object o) {

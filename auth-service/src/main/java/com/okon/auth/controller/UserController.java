@@ -1,14 +1,15 @@
-package com.okon.core.controller;
-
+package com.okon.auth.controller;
 
 import com.okon.api.dto.UserDTO;
-import com.okon.core.converter.UserConverter;
-import com.okon.core.service.UserService;
+import com.okon.auth.converter.UserConverter;
+import com.okon.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin("*")
 public class UserController {
     private final UserService userService;
     private final UserConverter userConverter;
@@ -27,7 +27,11 @@ public class UserController {
         return userConverter.convertToDTO(userService.findById(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_SUPER_ADMIN')")
+    @GetMapping("username/{username}")
+    public Optional<UserDTO> getUser(@PathVariable String username) {
+        return userConverter.convertToDTO(userService.findByUsername(username));
+    }
+
     @GetMapping
     public List<UserDTO> getUsers(Authentication authentication) {
         log.info("getUsers");

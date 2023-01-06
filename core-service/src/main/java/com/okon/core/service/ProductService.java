@@ -12,7 +12,7 @@ public interface ProductService {
 
     Product insert(Product product);
 
-    Page<Product> find(Integer minPrice, Integer maxPrice, Integer page, Integer limit);
+    Page<Product> find(Integer minPrice, Integer maxPrice, Integer page, Integer limit, String name);
 
     Product insertFromDTO(ProductDTO productDTO);
 

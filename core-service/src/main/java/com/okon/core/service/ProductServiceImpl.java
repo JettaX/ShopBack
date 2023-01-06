@@ -30,8 +30,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> find(Integer minPrice, Integer maxPrice, Integer page, Integer limit) {
+    public Page<Product> find(Integer minPrice, Integer maxPrice, Integer page, Integer limit, String name) {
         Specification<Product> specification = Specification.where(null);
+        if (name != null) {
+            specification = specification.and(ProductsSpecifications.nameStartWith(name));
+        }
         if (minPrice != null) {
             specification = specification.and(ProductsSpecifications.priceGreaterThanOrEqualTo(minPrice));
         }

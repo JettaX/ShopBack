@@ -1,7 +1,6 @@
-package com.okon.core.repository;
+package com.okon.auth.repository;
 
-
-import com.okon.core.model.User;
+import com.okon.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

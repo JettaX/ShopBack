@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrdersRepository extends JpaRepository<Order, Long> {
-    List<Order> findByUserId(Long userId);
+    List<Order> findByUsername(String username);
     Optional<Order> findById(Long id);
     @Query(value = "select count(p.id) FROM Order o join o.products as p on p.id = :id")
     Long countAllByProductId(@Param("id") Long productId);

@@ -4,11 +4,7 @@ server:
     encoding:
       charset: UTF-8
       enabled: true
-
-jwt:
-  private.key: classpath:app.key
-  public.key: classpath:app.pub
-
+    context-path: /okon-core
 
 spring:
   mandatory-file-encoding: UTF-8
@@ -18,17 +14,27 @@ spring:
       ddl-auto: create-drop
     generate-ddl: true
 
-  #datasource:
-  #  url: jdbc:postgresql://localhost:5455/Geek
-  #  username: kekNya
-  #  password: f8wy3dmi
-  #  driver-class-name: org.postgresql.Driver
-
   datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5455/Geek
+    username: kekNya
+    password: f8wy3dmi
+    driver-class-name: org.postgresql.Driver
 
-api:
-  cart.url: http://localhost:8082/api/cart
+  #datasource:
+  #  url: jdbc:h2:mem:test
+  #  username: sa
+  #  password:
+  #  driver-class-name: org.h2.Driver
+
+integrations:
+  cart-service:
+    baseUrl: http://localhost:8082/okon-cart/api/cart
+    connectionTimeout: 1000
+    readTimeout: 1000
+    writeTimeout: 1000
+  auth-service:
+    users:
+      baseUrl: http://localhost:8084/okon-auth/api/users
+      connectionTimeout: 1000
+      readTimeout: 1000
+      writeTimeout: 1000

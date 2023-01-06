@@ -14,6 +14,7 @@ public class CartConvertor {
         return CartDTO.builder()
                 .userId(cart.getUserId())
                 .products(itemConvertor.convertToDTO(cart.getProducts()))
+                .total(cart.getTotal())
                 .build();
     }
 }

@@ -3,9 +3,8 @@ package com.okon.core.integration;
 import com.okon.api.dto.CartDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -13,20 +12,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class CartServiceIntegration {
-    private final RestTemplate restTemplate;
-    @Value("${api.cart.url}")
-    private String baseUrl;
-    private final String urlSeparator = "/";
-    private final String urlMethodClear = "clear";
+    private final WebClient cartServiceWebClient;
 
     public Optional<CartDTO> findByUserId(Long id) {
-        log.info("find cart by user id: " + id);
-        CartDTO cartDTO = restTemplate.getForObject(
-                baseUrl + urlSeparator + id, CartDTO.class);
-        return Optional.ofNullable(cartDTO);
+        return Optional.ofNullable(cartServiceWebClient.get()
+                .uri("/" + id)
+                .retrieve()
+                .bodyToMono(CartDTO.class)
+                .block());
     }
 
     public void clearByUserId(Long id) {
-        restTemplate.getForObject(baseUrl + urlSeparator + urlMethodClear + urlSeparator + id, CartDTO.class);
+        cartServiceWebClient.get()
+                .uri("/clear/" + id)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 }

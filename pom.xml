@@ -5,7 +5,9 @@
 		<module>core-service</module>
 		<module>cart-service</module>
 		<module>api</module>
-	</modules>
+        <module>gateway</module>
+        <module>auth-service</module>
+    </modules>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.okon</groupId>

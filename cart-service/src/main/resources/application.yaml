@@ -4,9 +4,14 @@ server:
     encoding:
       charset: UTF-8
       enabled: true
+    context-path: /okon-cart
 
 spring:
   mandatory-file-encoding: UTF-8
 
-api:
-  products.url: http://localhost:8081/api/products
+integrations:
+  product-service:
+    baseUrl: http://localhost:8081/okon-core/api/products
+    connectionTimeout: 1000
+    readTimeout: 1000
+    writeTimeout: 1000

@@ -1,8 +1,7 @@
-package com.okon.core.converter;
-
+package com.okon.auth.converter;
 
 import com.okon.api.dto.UserDTO;
-import com.okon.core.model.User;
+import com.okon.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

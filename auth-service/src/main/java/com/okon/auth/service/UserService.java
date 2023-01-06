@@ -1,7 +1,7 @@
-package com.okon.core.service;
+package com.okon.auth.service;
 
 
-import com.okon.core.model.User;
+import com.okon.auth.model.User;
 
 import java.util.List;
 import java.util.Optional;

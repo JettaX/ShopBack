@@ -1,10 +1,9 @@
-package com.okon.core.model;
+package com.okon.auth.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -12,28 +11,21 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "users")
 @Builder
-public class User {
+@Entity
+@Table(name = "roles")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String surname;
-    @Column(unique = true)
-    private String username;
-    private String password;
-    @ManyToMany
-    @ToString.Exclude
-    private List<Role> roles;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        Role role = (Role) o;
+        return id != null && Objects.equals(id, role.id);
     }
 
     @Override

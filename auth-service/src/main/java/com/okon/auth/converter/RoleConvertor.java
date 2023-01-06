@@ -1,7 +1,7 @@
-package com.okon.core.converter;
+package com.okon.auth.converter;
 
 import com.okon.api.dto.RoleDTO;
-import com.okon.core.model.Role;
+import com.okon.auth.model.Role;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
