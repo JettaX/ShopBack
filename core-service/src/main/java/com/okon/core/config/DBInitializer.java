@@ -46,6 +46,7 @@ public class DBInitializer {
                 .image(Product1.getImage())
                 .quantity(9)
                 .price(new BigDecimal(799))
+                .totalPrice(new BigDecimal(7191))
                 .build();
 
         BoughtProduct boughtProduct2 = BoughtProduct.builder()
@@ -53,6 +54,7 @@ public class DBInitializer {
                 .image(Product2.getImage())
                 .price(new BigDecimal(999))
                 .quantity(3)
+                .totalPrice(new BigDecimal(2997))
                 .build();
 
         BoughtProduct boughtProduct3 = BoughtProduct.builder()
@@ -61,6 +63,7 @@ public class DBInitializer {
                 .image(Product3.getImage())
                 .quantity(1)
                 .price(new BigDecimal(899))
+                .totalPrice(new BigDecimal(899))
                 .build();
 
         BoughtProduct boughtProduct4 = BoughtProduct.builder()
@@ -69,6 +72,7 @@ public class DBInitializer {
                 .image(Product4.getImage())
                 .quantity(2)
                 .price(new BigDecimal(699))
+                .totalPrice(new BigDecimal(1398))
                 .build();
 
         BoughtProduct boughtProduct5 = BoughtProduct.builder()
@@ -77,6 +81,7 @@ public class DBInitializer {
                 .image(Product5.getImage())
                 .quantity(6)
                 .price(new BigDecimal(599))
+                .totalPrice(new BigDecimal(3594))
                 .build();
 
         boughtProduct1 = boughtProductService.insert(boughtProduct1);
@@ -129,43 +134,6 @@ public class DBInitializer {
         ordersService.insert(order4);
         ordersService.insert(order5);
     }
-
-    /*private void initUsers(UserService userService, RoleRepository roleRepository) {
-        Role roleUser = Role.builder().name("USER").build();
-        roleUser = roleRepository.save(roleUser);
-        Role roleAdmin = Role.builder().name("ADMIN").build();
-        roleAdmin = roleRepository.save(roleAdmin);
-        Role roleSUPERAdmin = Role.builder().name("SUPER_ADMIN").build();
-        roleSUPERAdmin = roleRepository.save(roleSUPERAdmin);
-
-        User user0 = User.builder()
-                .name("superadmin")
-                .surname("superadmin")
-                .username("superadmin")
-                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
-                .roles(List.of(roleSUPERAdmin))
-                .build();
-
-        User user1 = User.builder()
-                .name("admin")
-                .surname("admin")
-                .username("admin")
-                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
-                .roles(List.of(roleAdmin))
-                .build();
-
-        User user2 = User.builder()
-                .name("user")
-                .surname("user")
-                .username("user")
-                .password("$2a$12$s/m3PPvNG.6l.MmCf.TdR.z.xuf.bSQT0UhRLpfgtSOnPBWC0TlcC")
-                .roles(List.of(roleUser))
-                .build();
-
-        userService.insert(user0);
-        userService.insert(user1);
-        userService.insert(user2);
-    }*/
 
     private void initProducts(ProductService productService) {
         /*RandomProduct.getRandomProduct(5).forEach(productService::insert);*/

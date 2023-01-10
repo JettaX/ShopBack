@@ -24,6 +24,7 @@ public class BoughtProduct {
     private BigDecimal price;
     private String image;
     private Integer quantity;
+    private BigDecimal totalPrice;
 
     @Override
     public boolean equals(Object o) {

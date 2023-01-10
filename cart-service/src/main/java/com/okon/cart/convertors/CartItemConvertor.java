@@ -14,6 +14,7 @@ public class CartItemConvertor {
         return CartItemDTO.builder()
                 .product(cartItem.getProduct())
                 .quantity(cartItem.getQuantity())
+                .totalPrice(cartItem.getTotalPrice())
                 .build();
     }
 

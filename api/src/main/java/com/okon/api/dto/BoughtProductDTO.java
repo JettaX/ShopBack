@@ -5,17 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class ProductDTO implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class BoughtProductDTO {
     private Long id;
+    private Long productId;
     private String name;
-    private String description;
     private BigDecimal price;
     private String image;
+    private Integer quantity;
+    private BigDecimal totalPrice;
 }

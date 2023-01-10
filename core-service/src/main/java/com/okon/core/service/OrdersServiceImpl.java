@@ -46,19 +46,18 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public void createOrder(String username, String token) {
-        authService.findByUsername(username, token).ifPresent(user -> {
-            cartService.findByUserId(user.getId()).ifPresent(cart -> {
-                List<BoughtProduct> boughtProducts = boughtProductService
-                        .insertAll(convertProductsToBought(cart.getProducts()));
-                Order order = Order.builder()
-                        .username(username)
-                        .products(boughtProducts)
-                        .build();
-                order.calculateTotalPrice();
-                ordersRepository.save(order);
-                cartService.clearByUserId(user.getId());
-            });
-        });
+        authService.findByUsername(username, token).ifPresent(user ->
+                cartService.findByUserId(user.getId()).ifPresent(cart -> {
+            List<BoughtProduct> boughtProducts = boughtProductService
+                    .insertAll(convertProductsToBought(cart.getProducts()));
+            Order order = Order.builder()
+                    .username(username)
+                    .products(boughtProducts)
+                    .build();
+            order.calculateTotalPrice();
+            ordersRepository.save(order);
+            cartService.clearByUserId(user.getId());
+        }));
     }
 
     private BoughtProduct convertProductToBought(CartItemDTO cartItem) {
@@ -68,6 +67,7 @@ public class OrdersServiceImpl implements OrdersService {
                 .price(cartItem.getProduct().getPrice())
                 .image(cartItem.getProduct().getImage())
                 .quantity(cartItem.getQuantity())
+                .totalPrice(cartItem.getTotalPrice())
                 .build();
     }
 
