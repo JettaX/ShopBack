@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface OrdersRepository extends JpaRepository<Order, Long> {
     List<Order> findByUsername(String username);
     Optional<Order> findById(Long id);
-    @Query(value = "select count(p.id) FROM Order o join o.products as p on p.id = :id")
+    @Query(value = "select (count(o) * p.quantity) FROM Order o join o.products as p on p.productId = :id")
     Long countAllByProductId(@Param("id") Long productId);
 }

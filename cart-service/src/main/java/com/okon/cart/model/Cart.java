@@ -18,10 +18,13 @@ import java.util.stream.Stream;
 @Builder
 public class Cart {
     private Long userId;
-    private Set<CartItem> products = new HashSet<>();
+    private Set<CartItem> products;
     private BigDecimal total;
 
     public void addProduct(CartItem product) {
+        if (products == null) {
+            products = new HashSet<>();
+        }
         Optional<CartItem> item = findItem(product.getProduct().getId());
         item.ifPresent(cartItem -> removeAndUpdateQuantity(product, cartItem.getQuantity() + 1));
         addToProducts(products, product);
@@ -60,6 +63,7 @@ public class Cart {
         } else {
             products.remove(item.get());
         }
+        calculateTotal();
     }
 
     public boolean containsProduct(Long productId) {

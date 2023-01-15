@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -21,11 +20,9 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             cart = Cart.builder()
                     .userId(userId)
-                    .products(Set.of(product))
                     .build();
-        } else {
-            cart.addProduct(product);
         }
+        cart.addProduct(product);
         return carts.put(userId, cart);
     }
 

@@ -9,6 +9,7 @@ import com.okon.core.service.OrdersService;
 import com.okon.core.service.ProductService;
 import com.okon.core.util.RandomProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.List;
 
 
 @Component
+@Profile("prod")
 public class DBInitializer {
     private final BoughtProductRepository boughtProductRepository;
 
