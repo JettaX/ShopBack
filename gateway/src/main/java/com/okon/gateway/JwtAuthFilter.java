@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
     @Autowired
     private JwtUtil jwtUtil;
+    private static final String IDENTITY_USER_HEADERS = "username";
+    private static final String IDENTITY_ROLE_HEADERS = "roles";
 
     public JwtAuthFilter() {
         super(Config.class);
@@ -25,7 +27,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     public GatewayFilter apply(Config config) {
         log.info("JwtAuthFilter.apply()");
         return (exchange, chain) -> {
-            ServerHttpRequest request = exchange.getRequest();
+            ServerHttpRequest request = checkIfExistsHeadersAndDelete(exchange.getRequest());
             if (!isAuthMissing(request)) {
                 final String token = getAuthHeader(request);
                 if (jwtUtil.isInvalid(token)) {
@@ -38,6 +40,16 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     }
 
     public static class Config {
+    }
+
+    private ServerHttpRequest checkIfExistsHeadersAndDelete(ServerHttpRequest request) {
+        if (request.getHeaders().containsKey(IDENTITY_USER_HEADERS)) {
+            request.getHeaders().remove(IDENTITY_USER_HEADERS);
+        }
+        if (request.getHeaders().containsKey(IDENTITY_ROLE_HEADERS)) {
+            request.getHeaders().remove(IDENTITY_ROLE_HEADERS);
+        }
+        return request;
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
@@ -63,7 +75,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         exchange.getRequest().mutate()
-                .header("username", jwtUtil.getUsernameFromToken(token))
+                .header(IDENTITY_USER_HEADERS, jwtUtil.getUsernameFromToken(token))
 //                .header("role", String.valueOf(claims.get("role")))
                 .build();
     }

@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Component
-@Profile("prod")
+@Profile("dev")
 public class DBInitializer {
     private final BoughtProductRepository boughtProductRepository;
 
