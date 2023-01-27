@@ -40,7 +40,7 @@ class CartConvertorTest {
                 .build();
 
         cart = Cart.builder()
-                .userId(1L)
+                .userId("1")
                 .total(BigDecimal.valueOf(200))
                 .products(Set.of(cartItemOne))
                 .build();

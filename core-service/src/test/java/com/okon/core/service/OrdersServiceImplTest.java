@@ -64,7 +64,7 @@ class OrdersServiceImplTest {
                 .build();
 
         cartDTO = new CartDTO(
-                userId,
+                userId.toString(),
                 Set.of(cartItemOne),
                 cartItemOne.getTotalPrice()
         );

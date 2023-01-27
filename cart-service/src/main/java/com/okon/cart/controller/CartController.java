@@ -3,7 +3,6 @@ package com.okon.cart.controller;
 
 import com.okon.api.dto.CartDTO;
 import com.okon.api.dto.CartItemDTO;
-import com.okon.api.exceptions.ResourceNotFoundException;
 import com.okon.cart.convertors.CartConvertor;
 import com.okon.cart.convertors.CartItemConvertor;
 import com.okon.cart.model.CartItem;
@@ -23,41 +22,44 @@ public class CartController {
     private final CartConvertor cartConvertor;
     private final CartItemConvertor cartItemConvertor;
 
-    @GetMapping("/{userId}")
-    public Optional<CartDTO> getCartByUserId(@PathVariable Long userId) {
-        log.info("getCartByUserId {}", userId);
-        return Optional.ofNullable(cartConvertor.convertToDTO(cartService.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("user's cart does not exist"))));
+    @GetMapping("/{cartId}")
+    public Optional<CartDTO> getCartByUserId(@PathVariable String cartId) {
+        log.info("getCartByUserId {}", cartId);
+        return Optional.ofNullable(cartConvertor.convertToDTO(cartService.find(cartId)));
     }
 
-    @PatchMapping("/{userId}/{productId}/{quantity}")
+    @PatchMapping("/{cartId}/{productId}/{quantity}")
     public Optional<CartItemDTO> updateQuantityByProductIdAndUserId(
-            @PathVariable Long userId,
+            @PathVariable String cartId,
             @PathVariable Long productId,
             @PathVariable Integer quantity) {
-        log.info("updateQuantityByProductIdAndUserId {}, productId {} and quantity {}", userId, productId, quantity);
+        log.info("updateQuantityByProductIdAndUserId {}, productId {} and quantity {}", cartId, productId, quantity);
         return Optional
                 .ofNullable(cartItemConvertor
                         .convertToDTO(cartService
-                                .updateQuantity(userId, productId, quantity)
-                                .orElseThrow(() -> new ResourceNotFoundException("Update quantity by product failed"))));
+                                .updateQuantity(cartId, productId, quantity)));
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{cartId}")
     public void addToCart(
-            @PathVariable Long userId,
+            @PathVariable String cartId,
             @RequestBody CartItem cartItem) {
-        log.info("addToCart {} {}", userId, cartItem);
-        cartService.insertToCart(cartItem, userId);
+        log.info("addToCart {} {}", cartId, cartItem);
+        cartService.insertToCart(cartItem, cartId);
     }
 
-    @GetMapping("/clear/{userId}")
-    public void clearCartByUserId(@PathVariable Long userId) {
-        cartService.clearByUserId(userId);
+    @GetMapping("/clear/{cartId}")
+    public void clearCartByUserId(@PathVariable String cartId) {
+        cartService.clear(cartId);
     }
 
-    @DeleteMapping("/{userId}/{productId}")
-    public void removeProductFromCartByUserId(@PathVariable Long userId, @PathVariable Long productId) {
-        cartService.removeProductByUserId(userId, productId);
+    @DeleteMapping("/{cartId}/{productId}")
+    public void removeProductFromCartByUserId(@PathVariable String cartId, @PathVariable Long productId) {
+        cartService.removeProduct(cartId, productId);
+    }
+
+    @PostMapping("/merge/{cartId}/{guestId}")
+    public void mergeFromGuestCart(@PathVariable String cartId, @PathVariable String guestId) {
+        cartService.mergeFromGuestCart(cartId, guestId);
     }
 }

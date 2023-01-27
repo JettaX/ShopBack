@@ -21,13 +21,13 @@ class CartServiceImplTest {
     private static BigDecimal totalPriceForOne;
     private static CartItem cartItemTwo;
     private static BigDecimal totalPriceForTwo;
-    private static Long userId;
+    private static String userId;
     private static ProductDTO productDTOOne;
     private static ProductDTO productDTOTwo;
 
     @BeforeEach
     void setUp() {
-        userId = 1L;
+        userId = "1";
         productDTOOne = ProductDTO.builder()
                 .id(1L)
                 .name("Test")
@@ -61,17 +61,17 @@ class CartServiceImplTest {
 
     @AfterEach
     void clearCart() {
-        cartServiceImpl.clearByUserId(userId);
-        Assertions.assertTrue(cartServiceImpl.findByUserId(userId).isEmpty());
+        cartServiceImpl.clear(userId);
+        Assertions.assertTrue(cartServiceImpl.find(userId).getProducts().isEmpty());
     }
 
     @Test
     void testInsertToCartOne() {
-        Cart cartNull = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cartNull = cartServiceImpl.find(userId);
         Assertions.assertNull(cartNull);
 
         cartServiceImpl.insertToCart(cartItemOne, userId);
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
 
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(1, cart.getProducts().size());
@@ -80,12 +80,12 @@ class CartServiceImplTest {
 
     @Test
     void testInsertToCartTwo() {
-        Cart cartNull = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cartNull = cartServiceImpl.find(userId);
         Assertions.assertNull(cartNull);
 
         cartServiceImpl.insertToCart(cartItemOne, userId);
         cartServiceImpl.insertToCart(cartItemTwo, userId);
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
 
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(2, cart.getProducts().size());
@@ -95,16 +95,16 @@ class CartServiceImplTest {
 
     @Test
     void testTotalPriceIncrement() {
-        Cart cartNull = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cartNull = cartServiceImpl.find(userId);
         Assertions.assertNull(cartNull);
 
         cartServiceImpl.insertToCart(cartItemOne, userId);
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(totalPriceForOne, cart.getTotal());
 
         cartServiceImpl.insertToCart(cartItemTwo, userId);
-        cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(totalPriceForOne.add(totalPriceForTwo), cart.getTotal());
     }
@@ -112,17 +112,17 @@ class CartServiceImplTest {
     @Test
     void testUpdateQuantity() {
         var newQuantity = 5;
-        Cart cartNull = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cartNull = cartServiceImpl.find(userId);
         Assertions.assertNull(cartNull);
 
         cartServiceImpl.insertToCart(cartItemOne, userId);
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(1, cart.getProducts().size());
         Assertions.assertEquals(cartItemOne, cart.getProducts().iterator().next());
 
-        cartServiceImpl.updateQuantity(cartItemOne.getProduct().getId(), cartItemOne.getProduct().getId(), newQuantity);
-        cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        cartServiceImpl.updateQuantity(userId, cartItemOne.getProduct().getId(), newQuantity);
+        cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(1, cart.getProducts().size());
         Assertions.assertEquals(newQuantity, cart.getProducts().iterator().next().getQuantity());
@@ -131,19 +131,19 @@ class CartServiceImplTest {
 
     @Test
     void testRemoveProductByUserId() {
-        Cart cartNull = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cartNull = cartServiceImpl.find(userId);
         Assertions.assertNull(cartNull);
 
         cartServiceImpl.insertToCart(cartItemOne, userId);
         cartServiceImpl.insertToCart(cartItemTwo, userId);
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(2, cart.getProducts().size());
         Assertions.assertTrue(cart.getProducts().contains(cartItemOne));
         Assertions.assertTrue(cart.getProducts().contains(cartItemTwo));
 
-        cartServiceImpl.removeProductByUserId(cartItemOne.getProduct().getId(), userId);
-        cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        cartServiceImpl.removeProduct(userId, cartItemOne.getProduct().getId());
+        cart = cartServiceImpl.find(userId);
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(1, cart.getProducts().size());
         Assertions.assertFalse(cart.getProducts().contains(cartItemOne));

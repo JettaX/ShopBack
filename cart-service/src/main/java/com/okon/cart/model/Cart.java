@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @Builder
 public class Cart {
-    private Long userId;
+    private String userId;
     private Set<CartItem> products;
     private BigDecimal total;
 

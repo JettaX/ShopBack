@@ -28,7 +28,7 @@ class CartControllerTest {
     private WebTestClient webTestClient;
     @Autowired
     private CartItemConvertor cartItemConvertor;
-    private static Long userId;
+    private static String userId;
     private static CartItem cartItemOne;
     private static BigDecimal totalPriceForOne;
     private static CartItem cartItemTwo;
@@ -38,12 +38,12 @@ class CartControllerTest {
 
     @AfterEach
     void setUp() {
-        cartServiceImpl.clearByUserId(userId);
+        cartServiceImpl.clear(userId);
     }
 
     @BeforeEach
     void setUpAll() {
-        userId = 1L;
+        userId = "1";
         productDTOOne = ProductDTO.builder()
                 .id(1L)
                 .name("Test")
@@ -117,7 +117,7 @@ class CartControllerTest {
         Assertions.assertNotNull(cartItemDTO);
         Assertions.assertEquals(newQuantity, cartItemDTO.getQuantity());
 
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
 
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(userId, cart.getUserId());
@@ -134,7 +134,7 @@ class CartControllerTest {
                 .expectStatus()
                 .isOk();
 
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
 
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(userId, cart.getUserId());
@@ -152,7 +152,7 @@ class CartControllerTest {
                 .expectStatus()
                 .isOk();
 
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
         Assertions.assertNull(cart);
     }
 
@@ -165,7 +165,7 @@ class CartControllerTest {
                 .expectStatus()
                 .isOk();
 
-        Cart cart = cartServiceImpl.findByUserId(userId).orElse(null);
+        Cart cart = cartServiceImpl.find(userId);
 
         Assertions.assertNotNull(cart);
         Assertions.assertEquals(userId, cart.getUserId());

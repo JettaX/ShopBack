@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class CartDTO {
-    private Long userId;
+    private String userId;
     private Set<CartItemDTO> products;
     private BigDecimal total;
 }

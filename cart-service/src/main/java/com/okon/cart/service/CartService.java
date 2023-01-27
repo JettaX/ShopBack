@@ -4,17 +4,17 @@ package com.okon.cart.service;
 import com.okon.cart.model.Cart;
 import com.okon.cart.model.CartItem;
 
-import java.util.Optional;
-
 public interface CartService {
 
-    Cart insertToCart(CartItem product, Long userId);
+    Cart insertToCart(CartItem product, String cartId);
 
-    Optional<Cart> findByUserId(Long userId);
+    Cart find(String cartId);
 
-    void clearByUserId(Long userId);
+    void clear(String cartId);
 
-    void removeProductByUserId(Long userId, Long productId);
+    void removeProduct(String cartId, Long productId);
 
-    Optional<CartItem> updateQuantity(Long userId, Long productId, Integer quantity);
+    CartItem updateQuantity(String cartId, Long productId, Integer quantity);
+
+    void mergeFromGuestCart(String cartId, String guestId);
 }

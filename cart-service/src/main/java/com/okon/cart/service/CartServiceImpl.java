@@ -2,53 +2,64 @@ package com.okon.cart.service;
 
 import com.okon.cart.model.Cart;
 import com.okon.cart.model.CartItem;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
-    private final Map<Long, Cart> carts = new HashMap<>();
+    private final RedisTemplate<String, Cart> carts;
 
     @Override
-    public Cart insertToCart(CartItem product, Long userId) {
-        Cart cart = carts.get(userId);
-        if (cart == null) {
-            cart = Cart.builder()
-                    .userId(userId)
-                    .build();
-        }
+    public Cart insertToCart(CartItem product, String cartId) {
+        Cart cart = find(cartId);
         cart.addProduct(product);
-        return carts.put(userId, cart);
+        return carts.opsForValue().getAndSet(cartId, cart);
     }
 
 
     @Override
-    public Optional<Cart> findByUserId(Long userId) {
-        return Optional.ofNullable(carts.get(userId));
-    }
-
-    @Override
-    public void clearByUserId(Long userId) {
-        carts.remove(userId);
-    }
-
-    @Override
-    public void removeProductByUserId(Long userId, Long productId) {
-        Cart cart = carts.get(userId);
-        if (cart != null) {
-            cart.removeProduct(productId);
-            carts.put(userId, cart);
+    public Cart find(String cartId) {
+        if (Boolean.FALSE.equals(carts.hasKey(cartId))) {
+            carts.opsForValue().set(cartId, Cart.builder().userId(cartId).build());
         }
+        return carts.opsForValue().get(cartId);
     }
 
     @Override
-    public Optional<CartItem> updateQuantity(Long userId, Long productId, Integer quantity) {
-        Cart cart = findByUserId(userId).orElseThrow();
-        return cart.updateQuantity(productId, quantity);
+    public void clear(String cartId) {
+        carts.delete(cartId);
+    }
+
+    @Override
+    public void removeProduct(String cartId, Long productId) {
+        Cart cart = find(cartId);
+        cart.removeProduct(productId);
+        carts.opsForValue().set(cartId, cart);
+
+    }
+
+    @Override
+    public CartItem updateQuantity(String cartId, Long productId, Integer quantity) {
+        Cart cart = find(cartId);
+        CartItem cartItem = cart.updateQuantity(productId, quantity).orElseThrow();
+        carts.opsForValue().set(cartId, cart);
+        return cartItem;
+    }
+
+    @Override
+    public void mergeFromGuestCart(String cartId, String guestId) {
+        Cart guestCart = find(guestId);
+        if (!guestCart.getProducts().isEmpty()) {
+            Cart cart = find(cartId);
+            for (CartItem item : guestCart.getProducts()) {
+                cart.addProduct(item);
+            }
+            carts.opsForValue().set(cartId, cart);
+        }
+        clear(guestId);
     }
 }
