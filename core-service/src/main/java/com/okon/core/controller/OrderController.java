@@ -24,10 +24,10 @@ public class OrderController {
         return orderConvertor.convertToDTO(ordersService.findUserOrders(username));
     }
 
-    @GetMapping("/getCountOfBought/{id}")
-    public Long getCountOfBought(@PathVariable Long id) {
-        log.info("get count of bought: " + id);
-        return ordersService.getCountOfBought(id);
+    @GetMapping("/getCountOfBought/{productId}")
+    public Long getCountOfBought(@PathVariable Long productId) {
+        log.info("get count of bought: " + productId);
+        return ordersService.getCountOfBought(productId);
     }
 
     @PostMapping()

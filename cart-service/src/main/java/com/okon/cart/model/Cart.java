@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 public class Cart {
     private String userId;
     private Set<CartItem> products;
