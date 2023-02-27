@@ -16,7 +16,8 @@ public class CartServiceIntegration {
 
     public Optional<CartDTO> findByUserId(String id) {
         return Optional.ofNullable(cartServiceWebClient.get()
-                .uri("/" + id)
+                .uri("")
+                .header("username", id)
                 .retrieve()
                 .bodyToMono(CartDTO.class)
                 .block());
@@ -24,7 +25,8 @@ public class CartServiceIntegration {
 
     public void clearByUserId(String id) {
         cartServiceWebClient.get()
-                .uri("/clear/" + id)
+                .uri("/clear")
+                .header("username", id)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();

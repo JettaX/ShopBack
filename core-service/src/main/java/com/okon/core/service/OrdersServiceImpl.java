@@ -2,12 +2,13 @@ package com.okon.core.service;
 
 
 import com.okon.api.dto.CartItemDTO;
-import com.okon.core.integration.AuthServiceIntegration;
 import com.okon.core.integration.CartServiceIntegration;
+import com.okon.core.listenres.CartClearEvent;
 import com.okon.core.model.BoughtProduct;
 import com.okon.core.model.Order;
 import com.okon.core.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrdersRepository ordersRepository;
     private final CartServiceIntegration cartService;
     private final BoughtProductService boughtProductService;
-    private final AuthServiceIntegration authService;
+    private final ApplicationEventMulticaster applicationEventMulticaster;
 
     @Override
     public Order insert(Order order) {
@@ -55,7 +56,7 @@ public class OrdersServiceImpl implements OrdersService {
                     .build();
             order.calculateTotalPrice();
             ordersRepository.save(order);
-            cartService.clearByUserId(username);
+            applicationEventMulticaster.multicastEvent(new CartClearEvent(this, username));
         });
     }
 
