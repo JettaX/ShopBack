@@ -14,7 +14,7 @@ import java.util.Optional;
 public class CartServiceIntegration {
     private final WebClient cartServiceWebClient;
 
-    public Optional<CartDTO> findByUserId(Long id) {
+    public Optional<CartDTO> findByUserId(String id) {
         return Optional.ofNullable(cartServiceWebClient.get()
                 .uri("/" + id)
                 .retrieve()
@@ -22,7 +22,7 @@ public class CartServiceIntegration {
                 .block());
     }
 
-    public void clearByUserId(Long id) {
+    public void clearByUserId(String id) {
         cartServiceWebClient.get()
                 .uri("/clear/" + id)
                 .retrieve()

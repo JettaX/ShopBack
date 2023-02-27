@@ -46,8 +46,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public void createOrder(String username, String token) {
-        authService.findByUsername(username, token).ifPresent(user ->
-                cartService.findByUserId(user.getId()).ifPresent(cart -> {
+        cartService.findByUserId(username).ifPresent(cart -> {
             List<BoughtProduct> boughtProducts = boughtProductService
                     .insertAll(convertProductsToBought(cart.getProducts()));
             Order order = Order.builder()
@@ -56,8 +55,8 @@ public class OrdersServiceImpl implements OrdersService {
                     .build();
             order.calculateTotalPrice();
             ordersRepository.save(order);
-            cartService.clearByUserId(user.getId());
-        }));
+            cartService.clearByUserId(username);
+        });
     }
 
     private BoughtProduct convertProductToBought(CartItemDTO cartItem) {
