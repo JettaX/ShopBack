@@ -18,12 +18,7 @@ public class AuthController {
 
     @PostMapping
     public Credentials token(Authentication authentication) {
-        log.info(authentication.toString());
+        log.debug(authentication.toString());
         return tokenService.getCredentials(authentication);
-    }
-
-    @GetMapping("/health")
-    public boolean getHealth() {
-        return true;
     }
 }

@@ -24,17 +24,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     public Optional<UserDTO> getUser(@PathVariable Long id) {
+        log.debug("getUserById");
         return userConverter.convertToDTO(userService.findById(id));
     }
 
     @GetMapping("username/{username}")
     public Optional<UserDTO> getUser(@PathVariable String username) {
+        log.debug("getUserByUsername");
         return userConverter.convertToDTO(userService.findByUsername(username));
     }
 
     @GetMapping
     public List<UserDTO> getUsers(Authentication authentication) {
-        log.info("getUsers");
+        log.debug("getUsers");
         return userConverter.convertToDTO(userService.findAll());
     }
 

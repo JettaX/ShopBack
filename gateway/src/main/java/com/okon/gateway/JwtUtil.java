@@ -28,6 +28,12 @@ public class JwtUtil {
         return username;
     }
 
+    public String getRoleFromToken(String token) {
+        String role = getAllClaimsFromToken(token).get("scope").toString();
+        log.info("JwtUtil.getRoleFromToken() role: " + role);
+        return role;
+    }
+
     private boolean isTokenExpired(String token) {
         return this.getAllClaimsFromToken(token).getExpiration().before(new Date());
     }

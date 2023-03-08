@@ -2,6 +2,8 @@ package com.okon.core.controller;
 
 
 import com.okon.api.dto.OrderDTO;
+import com.okon.core.anotations.Authorities;
+import com.okon.core.anotations.hasAuthority;
 import com.okon.core.converter.OrderConvertor;
 import com.okon.core.service.OrdersService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class OrderController {
     private final OrdersService ordersService;
     private final OrderConvertor orderConvertor;
 
+    @hasAuthority(value = Authorities.USER)
     @GetMapping("/getUserOrders")
     public List<OrderDTO> getUserOrders(@RequestHeader String username) {
         log.info("get user orders: " + username);
@@ -30,6 +33,7 @@ public class OrderController {
         return ordersService.getCountOfBought(productId);
     }
 
+    @hasAuthority(value = Authorities.USER)
     @PostMapping()
     public void createOrder(@RequestHeader String username, @RequestHeader String authorization) {
         log.info("create order for user {}", username);

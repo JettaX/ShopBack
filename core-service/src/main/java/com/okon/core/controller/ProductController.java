@@ -2,6 +2,8 @@ package com.okon.core.controller;
 
 
 import com.okon.api.dto.ProductDTO;
+import com.okon.core.anotations.Authorities;
+import com.okon.core.anotations.hasAuthority;
 import com.okon.core.converter.ProductConvertor;
 import com.okon.core.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class ProductController {
 
     @GetMapping
     public Page<ProductDTO> getProducts(
+            @RequestHeader String roles,
             @RequestParam(required = false) Integer maxPrice,
             @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) String name,
@@ -43,19 +46,22 @@ public class ProductController {
         return productService.findById(id).map(productConvertor::convertToDTO);
     }
 
+    @hasAuthority(value = Authorities.ADMIN)
     @PostMapping
     public ProductDTO saveProduct(@RequestBody ProductDTO product) {
         log.info("Adding product: {}", product);
         return productConvertor.convertToDTO(productService.insertFromDTO(product));
     }
 
+    @hasAuthority(value = Authorities.ADMIN)
     @PostMapping("/update/{id}")
     public ProductDTO updateProduct(@RequestBody ProductDTO product, @PathVariable Long id) {
         product.setId(id);
         log.info("Update product: {}", product);
         return productConvertor.convertToDTO(productService.insertFromDTO(product));
     }
-    
+
+    @hasAuthority(value = Authorities.ADMIN)
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         log.info("Deleting product: {}", id);
