@@ -24,7 +24,6 @@ public class ProductController {
 
     @GetMapping
     public Page<ProductDTO> getProducts(
-            @RequestHeader String roles,
             @RequestParam(required = false) Integer maxPrice,
             @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) String name,
@@ -48,14 +47,14 @@ public class ProductController {
 
     @hasAuthority(value = Authorities.ADMIN)
     @PostMapping
-    public ProductDTO saveProduct(@RequestBody ProductDTO product) {
+    public ProductDTO saveProduct(@RequestBody ProductDTO product, @RequestHeader String roles) {
         log.info("Adding product: {}", product);
         return productConvertor.convertToDTO(productService.insertFromDTO(product));
     }
 
     @hasAuthority(value = Authorities.ADMIN)
     @PostMapping("/update/{id}")
-    public ProductDTO updateProduct(@RequestBody ProductDTO product, @PathVariable Long id) {
+    public ProductDTO updateProduct(@RequestBody ProductDTO product, @PathVariable Long id, @RequestHeader String roles) {
         product.setId(id);
         log.info("Update product: {}", product);
         return productConvertor.convertToDTO(productService.insertFromDTO(product));
@@ -63,7 +62,7 @@ public class ProductController {
 
     @hasAuthority(value = Authorities.ADMIN)
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable Long id, @RequestHeader String roles) {
         log.info("Deleting product: {}", id);
         productService.deleteById(id);
     }

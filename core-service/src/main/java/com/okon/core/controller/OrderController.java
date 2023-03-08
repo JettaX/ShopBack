@@ -22,7 +22,7 @@ public class OrderController {
 
     @hasAuthority(value = Authorities.USER)
     @GetMapping("/getUserOrders")
-    public List<OrderDTO> getUserOrders(@RequestHeader String username) {
+    public List<OrderDTO> getUserOrders(@RequestHeader String username, @RequestHeader String roles) {
         log.info("get user orders: " + username);
         return orderConvertor.convertToDTO(ordersService.findUserOrders(username));
     }
@@ -35,7 +35,7 @@ public class OrderController {
 
     @hasAuthority(value = Authorities.USER)
     @PostMapping()
-    public void createOrder(@RequestHeader String username, @RequestHeader String authorization) {
+    public void createOrder(@RequestHeader String username, @RequestHeader String authorization, @RequestHeader String roles) {
         log.info("create order for user {}", username);
         ordersService.createOrder(username, authorization);
     }
